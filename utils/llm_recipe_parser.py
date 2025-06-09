@@ -9,7 +9,7 @@ def parse_mixtral_response(response: str):
     for line in lines:
         line = line.strip()
         if line.lower().startswith("title"):
-            section = "title"
+            title = line.split(":", 1)[1].strip() 
             continue
         elif line.lower().startswith("ingredients"):
             section = "ingredients"
@@ -18,11 +18,12 @@ def parse_mixtral_response(response: str):
             section = "instructions"
             continue
 
-        if section == "title" and line:
-            title = line
-        elif section == "ingredients":
-            ingredients = [i.strip() for i in line.split(",") if i.strip()]
+        
+        if section == "ingredients" and line:
+            item = line.strip("- ").split(",")[0].strip()
+            if item:
+                ingredients.append(item)
         elif section == "instructions" and line:
-            instructions.append(line)
+            instructions.append(line) 
 
     return title, ingredients, instructions
