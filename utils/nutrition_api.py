@@ -8,10 +8,7 @@ EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 EDAMAM_API_HOST = os.getenv("EDAMAM_API_HOST")
 
 def clean_ingredients(item):
-    parts = item.split("--")[0].split("Env")[0].strip()
-    if not any(char.isdigit() for char in parts):
-        return None
-    return parts 
+    return item if len(item.split()) > 1 else None
 
 
 def fetch_nutrition(ingredients: str):
@@ -22,7 +19,13 @@ def fetch_nutrition(ingredients: str):
         "X-RapidApi-Host": EDAMAM_API_HOST,
     }
 
-    ingr = [clean_ingredients(i.strip()) for i in ingredients.split("|")]
+    if isinstance(ingredients, str):
+        ingr_list = [i.strip() for i in ingredients.split(",")]
+    else:
+        ingr_list = [i.strip() for i in ingredients]
+
+    
+    ingr = [clean_ingredients(i) for i in ingr_list if i.strip()]
     ingr = [i for i in ingr if i]
 
     total = {
@@ -50,7 +53,7 @@ def fetch_nutrition(ingredients: str):
     
         except Exception as e:
             print(f"Nutrition fetch failed for: {item} - {str(e)}")
-
+    print(f"Total nutrition for ingredients: {ingredients} - {total}")
     return total
     
 

@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 from utils.recipe_api import fetch_recipe
 from utils.nutrition_api import fetch_nutrition
@@ -141,8 +142,16 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
 
     else:
         with st.spinner("🧠 No recipes found. Generating recipe with AI..."):
-            raw_response = generate_recipe(combined_ingr.split(","))
-            title, ingredients, instructions = parse_mixtral_response(raw_response)
+            raw_response = generate_recipe([i.strip() for i in combined_ingr.split(",") if i.strip()])
+            if not raw_response:
+                st.error("Failed to generate a recipe. Please try again with different ingredients.")
+                st.stop()
+
+            # title, ingredients, instructions = parse_mixtral_response(raw_response)
+            recipe_json = json.loads(raw_response)
+            title = recipe_json["title"]
+            ingredients = recipe_json["ingredients"]
+            instructions = recipe_json["instructions"]
 
             st.markdown(f"### 🥘 {title}")
             st.markdown("---")
@@ -157,10 +166,10 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
             for step in instructions:
                 st.markdown(step)
             
-            ingredients_text = ", ".join(ingredients)
+            
             st.markdown("---") 
             st.markdown("#### 🔍 Total Nutritional Info ")
-            nutrition_data = fetch_nutrition(ingredients_text)
+            nutrition_data = fetch_nutrition(ingredients)
 
             if nutrition_data:
                 calories = nutrition_data.get("calories", 0)
@@ -168,7 +177,7 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
                 protein = nutrition_data.get("PROCNT", 0)
                 carbs = nutrition_data.get("CHOCDF", 0)
                 cholesterol = nutrition_data.get("CHOLE", 0)
-
+                
                 st.markdown(f"**Calories:** {calories:.1f} kcal")
                 st.markdown(f"**Protein:** {protein:.1f} g")
                 st.markdown(f"**Fat:** {fat:.1f} g")
@@ -176,10 +185,6 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
                 st.markdown(f"**Cholesterol:** {cholesterol:.1f} mg")
             else:
                 st.warning("Could not fetch nutrition info for the generated recipe.")
-
-
-
-
 
 # Footer
 st.markdown("---")
