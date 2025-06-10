@@ -1,2 +1,13 @@
 venv/
 .env
+
+agents/__pycache__/
+
+fallback/__pycache__/
+
+schema/__pycache__/
+
+tools/__pycache__/
+
+utils/__pycache__/
+

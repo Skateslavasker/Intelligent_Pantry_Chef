@@ -1,9 +1,9 @@
 import json
 import streamlit as st
-from utils.recipe_api import fetch_recipe
+from agents.pantry_agent import run_pantry_agent
 from utils.nutrition_api import fetch_nutrition
-from utils.image_to_ingredients import extract_ingr_from_image
-from utils.llm_recipe import generate_recipe
+from utils.image_to_ingr import extract_ingr_from_image
+
 
 # Page Config
 st.set_page_config(page_title="Intelligent Pantry Chef", page_icon="🥗", layout="centered")
@@ -88,103 +88,43 @@ if selected_image_ingr:
     combined_ingr += f", {', '.join(selected_image_ingr)}" if combined_ingr else ", ".join(selected_image_ingr)
 
 
-
+# --- Recipe Generation ---
 if st.button("✨ Find Recipe") and combined_ingr.strip():
     with st.spinner("Searching for the perfect recipe..."):
-        recipes = fetch_recipe(combined_ingr)
+        recipe = run_pantry_agent(combined_ingr)
 
-    if recipes:
-        recipe = recipes[0]
-        
-        # --- Recipe Header ---
-        st.markdown(f"### 🥘 {recipe['title']}")
-        st.markdown(f"**🍽️ Servings:** {recipe['servings']}")
-        st.markdown("---")
+    # --- Recipe Header ---
+    st.markdown(f"### 🥘 {recipe['title']}")
+    st.markdown("---")
 
-        # --- Ingredient Columns ---
-        st.markdown("#### 🧂 Ingredients")
-        ingredients = [i.strip() for i in recipe["ingredients"].split("|")]
-        col1, col2 = st.columns(2)
-        for idx, item in enumerate(ingredients):
-            if idx % 2 == 0:
-                col1.markdown(f"- {item}")
-            else:
-                col2.markdown(f"- {item}")
-        st.markdown("---")
+    # --- Ingredients Section ---
+    st.markdown("#### 🧂 Ingredients")
+    col1, col2 = st.columns(2)
+    for idx, item in enumerate(recipe['ingredients']):
+        (col1 if idx % 2 == 0 else col2).markdown(f"- {item}")
+    
+    st.markdown("---")
+    
+    # --- Instructions Section ---
+    st.markdown("#### 📖 Instructions")
+    for step in recipe["instructions"]:
+        st.markdown(f"- {step}")
+    
+    st.markdown("---")
 
-        # --- Instructions ---
-        st.markdown("#### 📖 Instructions")
-        st.markdown(f"<div style='line-height: 1.8;'>{recipe['instructions']}</div>", unsafe_allow_html=True)
+    # --- Nutrition Section ---
+    st.markdown("#### 🔍 Total Nutritional Info")
+    ingredients_for_nutrition = ", ".join(recipe['ingredients'])
+    nutrition_data = fetch_nutrition(ingredients_for_nutrition)
 
-        # --- Nutrition Info ---
-        st.markdown("---")
-        ingredients_text = recipe["ingredients"].replace("|", ",").replace(";", "")
-
-        st.markdown("#### 🔍 Total Nutritional Info")
-
-        nutrition_data = fetch_nutrition(ingredients_text)
-        
-        if nutrition_data:
-            calories = nutrition_data.get("calories", 0)
-            fat = nutrition_data.get("FAT", 0)
-            protein = nutrition_data.get("PROCNT", 0)
-            carbs = nutrition_data.get("CHOCDF", 0)
-            cholesterol = nutrition_data.get("CHOLE", 0)
-
-            st.markdown(f"**Calories:** {calories:.1f} kcal")
-            st.markdown(f"**Protein:** {protein:.1f} g")
-            st.markdown(f"**Fat:** {fat:.1f} g")
-            st.markdown(f"**Carbohydrates:** {carbs:.1f} g")
-            st.markdown(f"**Cholesterol:** {cholesterol:.1f} mg")
-        
-        else:
-            st.warning("Could not fetch nutrition info.")
-
+    if nutrition_data:
+        st.markdown(f"**Calories:** {nutrition_data.get('calories', 0):.1f} kcal")
+        st.markdown(f"**Protein:** {nutrition_data.get('PROCNT', 0):.1f} g")
+        st.markdown(f"**Fat:** {nutrition_data.get('FAT', 0):.1f} g")
+        st.markdown(f"**Carbohydrates:** {nutrition_data.get('CHOCDF', 0):.1f} g")
+        st.markdown(f"**Cholesterol:** {nutrition_data.get('CHOLE', 0):.1f} mg")
     else:
-        with st.spinner("🧠 No recipes found. Generating recipe with AI..."):
-            raw_response = generate_recipe([i.strip() for i in combined_ingr.split(",") if i.strip()])
-            if not raw_response:
-                st.error("Failed to generate a recipe. Please try again with different ingredients.")
-                st.stop()
-
-            # title, ingredients, instructions = parse_mixtral_response(raw_response)
-            recipe_json = json.loads(raw_response)
-            title = recipe_json["title"]
-            ingredients = recipe_json["ingredients"]
-            instructions = recipe_json["instructions"]
-
-            st.markdown(f"### 🥘 {title}")
-            st.markdown("---")
-
-            st.markdown("#### 🧂 Ingredients")
-            for item in ingredients:
-                st.markdown(f"- {item}")
-            
-            st.markdown("---")
-
-            st.markdown("#### 📖 Instructions")
-            for step in instructions:
-                st.markdown(step)
-            
-            
-            st.markdown("---") 
-            st.markdown("#### 🔍 Total Nutritional Info ")
-            nutrition_data = fetch_nutrition(ingredients)
-
-            if nutrition_data:
-                calories = nutrition_data.get("calories", 0)
-                fat = nutrition_data.get("FAT", 0)
-                protein = nutrition_data.get("PROCNT", 0)
-                carbs = nutrition_data.get("CHOCDF", 0)
-                cholesterol = nutrition_data.get("CHOLE", 0)
-                
-                st.markdown(f"**Calories:** {calories:.1f} kcal")
-                st.markdown(f"**Protein:** {protein:.1f} g")
-                st.markdown(f"**Fat:** {fat:.1f} g")
-                st.markdown(f"**Carbohydrates:** {carbs:.1f} g")
-                st.markdown(f"**Cholesterol:** {cholesterol:.1f} mg")
-            else:
-                st.warning("Could not fetch nutrition info for the generated recipe.")
+        st.warning("⚠️ Could not fetch nutrition info.")
 
 # Footer
 st.markdown("---")
