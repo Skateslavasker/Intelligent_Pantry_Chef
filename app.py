@@ -2,8 +2,8 @@ import json
 import streamlit as st
 from utils.recipe_api import fetch_recipe
 from utils.nutrition_api import fetch_nutrition
-from utils.image_to_ingredients import extract_ingr_from_image
-from utils.llm_recipe import generate_recipe
+from utils.image_to_ingr import extract_ingr_from_image
+from utils.generate_recipe import generate_recipe
 
 # Page Config
 st.set_page_config(page_title="Intelligent Pantry Chef", page_icon="🥗", layout="centered")
