@@ -17,6 +17,7 @@ def normalize_recipe_api_format(recipe: dict) -> dict:
     }
 
 def run_pantry_agent(ingredients: str) -> dict:
+    # Run Agent
     try:
         result = recipe_lookup.run(ingredients)
         if "TOOL_ERROR" not in result:
