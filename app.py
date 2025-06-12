@@ -162,4 +162,4 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
 
 # Footer
 st.markdown("---")
-st.caption("Powered by API Ninjas • Built with ❤️ using Streamlit")
+st.caption(" Built using Streamlit")
