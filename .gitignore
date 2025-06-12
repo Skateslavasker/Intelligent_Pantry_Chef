@@ -1,6 +1,6 @@
 venv/
-.env/
-
+.env
+.env.*
 agents/__pycache__/
 fallback/__pycache__/
 schema/__pycache__/
