@@ -3,11 +3,45 @@ import streamlit as st
 from agents.pantry_agent import run_pantry_agent
 from utils.nutrition_api import fetch_nutrition
 from utils.image_to_ingr import extract_ingr_from_image
+import jwt 
+from dotenv import load_dotenv
+import os 
+load_dotenv()
+
+
+JWT_SECRET = os.getenv("JWT_SECRET")
+
+def authenticate_user_from_url():
+    """Authenticate user from JWT token in URL."""
+    query_params = st.query_params
+    token = query_params.get("token")
+    email = query_params.get("email")
+
+    if token and email:
+        try:
+            decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+            if decoded.get("email") == email:
+                st.session_state["user"] = {
+                    "email": email,
+                    "jwt": token
+                }
+        except jwt.ExpiredSignatureError:
+            st.error("Session expired. Please log in again.")
+        except jwt.InvalidTokenError:
+            st.error("Invalid token. Please log in again.")
 
 
 # Page Config
 st.set_page_config(page_title="Intelligent Pantry Chef", page_icon="🥗", layout="centered")
 
+authenticate_user_from_url()
+
+if "user" not in st.session_state:
+    st.error("You must be logged in to use this app. Please log in first.")
+    st.markdown("[👉 Login with Google](http://localhost:8000/login)")
+    st.stop()
+else:
+    st.success(f"Welcome, {st.session_state['user']['email']}")
 # --- Header Section ---
 st.markdown("""
     <style>

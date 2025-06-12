@@ -7,3 +7,6 @@ schema/__pycache__/
 tools/__pycache__/
 utils/__pycache__/
 
+__pycache__/
+
+jwt_gen.py 
