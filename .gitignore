@@ -1,5 +1,5 @@
 venv/
-.env
+.env/
 
 agents/__pycache__/
 fallback/__pycache__/
