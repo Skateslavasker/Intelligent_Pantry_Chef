@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os 
 load_dotenv()
 client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
-print("Together api keyt:", os.getenv("TOGETHER_API_KEY"))
 
 def generate_recipe(ingr: list[str]) -> str:
     prompt = (
@@ -27,5 +26,5 @@ def generate_recipe(ingr: list[str]) -> str:
     json_mode=True,
     )
 
-    print(f"Raw response: {response}")
+   
     return response.choices[0].message.content

@@ -53,7 +53,7 @@ def fetch_nutrition(ingredients: str):
     
         except Exception as e:
             print(f"Nutrition fetch failed for: {item} - {str(e)}")
-    print(f"Total nutrition for ingredients: {ingredients} - {total}")
+    
     return total
     
 

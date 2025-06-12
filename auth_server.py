@@ -41,21 +41,21 @@ async def login(request: Request):
 async def auth(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
-        print("🔑 Access Token:", token)
+       
         user = token.get("userinfo")
         
 
         if not user or "email" not in user:
             return JSONResponse(status_code=400, content={"error": "Failed to authenticate user"})
-        print("👤 User Info:", user)
+        
         
         # create JWT token
         jwt_token = jwt.encode({"email": user["email"]}, JWT_SECRET, algorithm="HS256")
-        print("🔐 JWT Token:", jwt_token)
+        
 
         # redirect to frontend with JWT token
         redirect_url = f"{FRONTEND_URL}?token={jwt_token}&email={user['email']}"
-        print("🔄 Redirect URL:", redirect_url)
+        
         return RedirectResponse(url=redirect_url)
     
     except Exception as e:
