@@ -1,10 +1,10 @@
 from together import Together
+from dotenv import load_dotenv
 
 import os 
-
-TOGETHER_API_TOKEN = os.getenv("TOGETHER_API_TOKEN")
-
-client = Together(api_key=TOGETHER_API_TOKEN)
+load_dotenv()
+client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
+print("Together api keyt:", os.getenv("TOGETHER_API_KEY"))
 
 def generate_recipe(ingr: list[str]) -> str:
     prompt = (
