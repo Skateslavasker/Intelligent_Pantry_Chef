@@ -1,7 +1,7 @@
 import os
-import replicate
+
 from dotenv import load_dotenv
-from PIL import Image
+
 import requests
 import base64
 from openai import OpenAI

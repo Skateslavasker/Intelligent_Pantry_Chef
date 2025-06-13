@@ -4,6 +4,7 @@ from fallback.fallback_handlers import fallback_recipe
 from schemas.recipe_schema import RecipeOutput
 import json
 
+
 def normalize_recipe_api_format(recipe: dict) -> dict:
     return {
         "title": recipe.get("title", "Untitled Recipe"),
@@ -16,6 +17,7 @@ def normalize_recipe_api_format(recipe: dict) -> dict:
             else recipe.get("instructions", [])
         ),
     }
+
 
 def run_pantry_agent(ingredients: str) -> dict:
     try:
@@ -32,3 +34,4 @@ def run_pantry_agent(ingredients: str) -> dict:
     except Exception as e:
         print("Agent Failed: ", str(e))
         return fallback_recipe(ingredients)
+    

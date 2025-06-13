@@ -1,4 +1,3 @@
-import json
 import streamlit as st
 from agents.pantry_agent import run_pantry_agent
 from utils.nutrition_api import fetch_nutrition
