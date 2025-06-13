@@ -9,7 +9,7 @@ def normalize_recipe_api_format(recipe: dict) -> dict:
     return {
         "title": recipe.get("title", "Untitled Recipe"),
         "ingredients": [
-            i.strip() for i in recipe.get("ingredients", "").split("|") 
+            i.strip() for i in recipe.get("ingredients", "").split("|")
             if i.strip()
         ],
         "instructions": (
