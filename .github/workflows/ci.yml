@@ -42,5 +42,5 @@ jobs:
 
     - name: Build Docker images
       run: |
-        docker build -t pantry-auth -f backend/Dockerfile .
+        docker build -t pantry-auth -f backend/Dockerfile backend
         docker build -t pantry-frontend -f Dockerfile .
