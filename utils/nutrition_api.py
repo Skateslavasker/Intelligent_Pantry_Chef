@@ -39,21 +39,26 @@ def fetch_nutrition(ingredients: str):
     for item in ingr:
         params = {"ingr": item, "nutrition-type": "cooking"}
         try:
-            response = requests.get(url, headers=headers, params=params, timeout=10)
+            response = requests.get(url, headers=headers, 
+                                    params=params, timeout=10)
             if response.status_code == 200:
                 data = response.json()
                 total["calories"] += data.get("calories", 0)
                 total["FAT"] += (
-                    data.get("totalNutrients", {}).get("FAT", {}).get("quantity", 0)
+                    data.get("totalNutrients", {})
+                    .get("FAT", {}).get("quantity", 0)
                 )
                 total["PROCNT"] += (
-                    data.get("totalNutrients", {}).get("PROCNT", {}).get("quantity", 0)
+                    data.get("totalNutrients", {})
+                    .get("PROCNT", {}).get("quantity", 0)
                 )
                 total["CHOCDF"] += (
-                    data.get("totalNutrients", {}).get("CHOCDF", {}).get("quantity", 0)
+                    data.get("totalNutrients", {})
+                    .get("CHOCDF", {}).get("quantity", 0)
                 )
                 total["CHOLE"] += (
-                    data.get("totalNutrients", {}).get("CHOLE", {}).get("quantity", 0)
+                    data.get("totalNutrients", {})
+                    .get("CHOLE", {}).get("quantity", 0)
                 )
 
         except Exception as e:

@@ -17,13 +17,15 @@ def generate_recipe(ingr: list[str]) -> str:
         '  "ingredients": ["ingredient 1", "ingredient 2", ...],\n'
         '  "instructions": ["Step 1", "Step 2", ...]\n'
         "}\n\n"
-        "Do NOT include nutritional info. Do not add any extra commentary. Only return the JSON object."
+        "Do NOT include nutritional info. Do not add any extra commentary. "
+        "Only return the JSON object."
     )
 
     response = client.chat.completions.create(
         model="mistralai/Mixtral-8x7B-Instruct-v0.1",
         messages=[
-            {"role": "system", "content": "You generate recipes from ingredients."},
+            {"role": "system", 
+             "content": "You generate recipes from ingredients."},
             {"role": "user", "content": prompt},
         ],
         json_mode=True,

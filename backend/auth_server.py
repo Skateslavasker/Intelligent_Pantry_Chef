@@ -23,7 +23,8 @@ oauth.register(
     name="google",
     client_id=os.getenv("GOOGLE_CLIENT_ID"),
     client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
-    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+    server_metadata_url="https://accounts.google.com/"
+    ".well-known/openid-configuration",
     client_kwargs={"scope": "openid email profile"},
 )
 
@@ -48,14 +49,17 @@ async def auth(request: Request):
 
         if not user or "email" not in user:
             return JSONResponse(
-                status_code=400, content={"error": "Failed to authenticate user"}
+                status_code=400,
+                content={"error": "Failed to authenticate user"}
             )
 
         # create JWT token
-        jwt_token = jwt.encode({"email": user["email"]}, JWT_SECRET, algorithm="HS256")
+        jwt_token = jwt.encode({"email": user["email"]},
+                               JWT_SECRET, algorithm="HS256")
 
         # redirect to frontend with JWT token
-        redirect_url = f"{FRONTEND_URL}?token={jwt_token}&email={user['email']}"
+        redirect_url = f"{FRONTEND_URL}?token={jwt_token}\
+        &email={user['email']}"
 
         return RedirectResponse(url=redirect_url)
 

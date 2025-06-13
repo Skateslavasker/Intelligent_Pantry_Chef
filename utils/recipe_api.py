@@ -26,5 +26,6 @@ def fetch_recipe(query: str):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error fetching recipe: {response.status_code} - {response.text}")
+        print(f"Error fetching recipe: \
+              {response.status_code} - {response.text}")
         return []

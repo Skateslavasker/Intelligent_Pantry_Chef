@@ -3,7 +3,8 @@ def fallback_recipe(ingredients: str) -> dict:
     base = ingredients.split(",")[0] if ingredients else "vegetables"
     return {
         "title": f"Simple sautéed {base.strip()}",
-        "ingredients": [i.strip() for i in ingredients.split(",") if i.strip()],
+        "ingredients": [i.strip() for i in ingredients.split(",")
+                        if i.strip()],
         "instructions": [
             f"Wash and chop the {base.strip()}.",
             "Heat a pan, add oil.",

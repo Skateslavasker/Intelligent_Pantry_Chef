@@ -107,7 +107,8 @@ if uploaded_image:
                 st.session_state.cached_ingredients = ingr_list
                 st.session_state.last_image_name = file_name
             else:
-                st.warning("Could not detect any ingredients. Try a clearer image.")
+                st.warning("Could not detect any ingredients.\t " \
+                "Try a clearer image.")
 
     image_ingr = st.session_state.cached_ingredients
 
@@ -159,11 +160,15 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
     nutrition_data = fetch_nutrition(ingredients_for_nutrition)
 
     if nutrition_data:
-        st.markdown(f"**Calories:** {nutrition_data.get('calories', 0):.1f} kcal")
-        st.markdown(f"**Protein:** {nutrition_data.get('PROCNT', 0):.1f} g")
-        st.markdown(f"**Fat:** {nutrition_data.get('FAT', 0):.1f} g")
-        st.markdown(f"**Carbohydrates:** {nutrition_data.get('CHOCDF', 0):.1f} g")
-        st.markdown(f"**Cholesterol:** {nutrition_data.get('CHOLE', 0):.1f} mg")
+        st.markdown(f"**Calories:** {nutrition_data.get('calories', 0):.1f} \
+                    kcal")
+        st.markdown(f"**Protein:** {nutrition_data.get('PROCNT', 0):.1f} \
+                    g")
+        st.markdown(f"**Fat:** {nutrition_data.get('FAT', 0):.1f} \
+                    g")
+        st.markdown(f"**Carbs:** {nutrition_data.get('CHOCDF', 0):.1f} g")
+        st.markdown(f"**Cholesterol:** {nutrition_data.get('CHOLE', 0):.1f} \
+                    mg")
     else:
         st.warning("⚠️ Could not fetch nutrition info.")
 

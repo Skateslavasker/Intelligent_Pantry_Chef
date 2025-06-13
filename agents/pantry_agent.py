@@ -9,7 +9,8 @@ def normalize_recipe_api_format(recipe: dict) -> dict:
     return {
         "title": recipe.get("title", "Untitled Recipe"),
         "ingredients": [
-            i.strip() for i in recipe.get("ingredients", "").split("|") if i.strip()
+            i.strip() for i in recipe.get("ingredients", "").split("|") 
+            if i.strip()
         ],
         "instructions": (
             [recipe.get("instructions", "").strip()]
@@ -33,5 +34,5 @@ def run_pantry_agent(ingredients: str) -> dict:
         return fallback_recipe(ingredients)
     except Exception as e:
         print("Agent Failed: ", str(e))
+        
         return fallback_recipe(ingredients)
-    
