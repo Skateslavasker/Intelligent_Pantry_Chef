@@ -34,5 +34,4 @@ def run_pantry_agent(ingredients: str) -> dict:
         return fallback_recipe(ingredients)
     except Exception as e:
         print("Agent Failed: ", str(e))
-        
         return fallback_recipe(ingredients)

@@ -24,7 +24,7 @@ def generate_recipe(ingr: list[str]) -> str:
     response = client.chat.completions.create(
         model="mistralai/Mixtral-8x7B-Instruct-v0.1",
         messages=[
-            {"role": "system", 
+            {"role": "system",
              "content": "You generate recipes from ingredients."},
             {"role": "user", "content": prompt},
         ],

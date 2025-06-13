@@ -39,7 +39,7 @@ def fetch_nutrition(ingredients: str):
     for item in ingr:
         params = {"ingr": item, "nutrition-type": "cooking"}
         try:
-            response = requests.get(url, headers=headers, 
+            response = requests.get(url, headers=headers,
                                     params=params, timeout=10)
             if response.status_code == 200:
                 data = response.json()

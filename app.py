@@ -107,7 +107,7 @@ if uploaded_image:
                 st.session_state.cached_ingredients = ingr_list
                 st.session_state.last_image_name = file_name
             else:
-                st.warning("Could not detect any ingredients.\t " \
+                st.warning("Could not detect any ingredients. "
                 "Try a clearer image.")
 
     image_ingr = st.session_state.cached_ingredients
