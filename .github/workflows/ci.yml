@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
      
     steps:
-    - run: echo "Repo owner: ${{ github.repository_owner }}"
 
     - name: Checkout repo
       uses: actions/checkout@v4
