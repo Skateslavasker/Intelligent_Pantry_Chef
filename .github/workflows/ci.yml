@@ -1,5 +1,4 @@
-name: PantryChef CI
-
+name: PantryChef CI Workflow
 on:
   push:
     branches: [ main ]
