@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# Git
+.git/
+.gitignore
+
+# Config / Secrets
+.env
+.env.*
+
+# Build/test/output
+*.log
+*.db
+*.egg-info/
+
+
+
