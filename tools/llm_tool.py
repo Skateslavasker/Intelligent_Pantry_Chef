@@ -1,5 +1,6 @@
-from langchain.tools import tool 
+from langchain.tools import tool
 from utils.generate_recipe import generate_recipe
+
 
 @tool
 def llm_lookup(ingr: list[str]) -> str:

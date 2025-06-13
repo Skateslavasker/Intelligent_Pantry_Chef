@@ -3,13 +3,15 @@ import streamlit as st
 from agents.pantry_agent import run_pantry_agent
 from utils.nutrition_api import fetch_nutrition
 from utils.image_to_ingr import extract_ingr_from_image
-import jwt 
+import jwt
 from dotenv import load_dotenv
-import os 
+import os
+
 load_dotenv()
 
 
 JWT_SECRET = os.getenv("JWT_SECRET")
+
 
 def authenticate_user_from_url():
     """Authenticate user from JWT token in URL."""
@@ -21,10 +23,7 @@ def authenticate_user_from_url():
         try:
             decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
             if decoded.get("email") == email:
-                st.session_state["user"] = {
-                    "email": email,
-                    "jwt": token
-                }
+                st.session_state["user"] = {"email": email, "jwt": token}
         except jwt.ExpiredSignatureError:
             st.error("Session expired. Please log in again.")
         except jwt.InvalidTokenError:
@@ -32,7 +31,9 @@ def authenticate_user_from_url():
 
 
 # Page Config
-st.set_page_config(page_title="Intelligent Pantry Chef", page_icon="🥗", layout="centered")
+st.set_page_config(
+    page_title="Intelligent Pantry Chef", page_icon="🥗", layout="centered"
+)
 
 authenticate_user_from_url()
 
@@ -43,7 +44,8 @@ if "user" not in st.session_state:
 else:
     st.success(f"Welcome, {st.session_state['user']['email']}")
 # --- Header Section ---
-st.markdown("""
+st.markdown(
+    """
     <style>
         .heading-box {
             background-color: rgba(46, 139, 87, 0.1);
@@ -68,7 +70,9 @@ st.markdown("""
         <h1>🍽️ Intelligent Pantry Chef</h1>
         <div class="heading-sub">Turn your leftovers into delicious meals</div>
     </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 # --- Input Section ---
@@ -77,7 +81,7 @@ st.markdown("## 📝 Enter Ingredients")
 user_input = st.text_input(
     "Ingredient Input",
     placeholder="e.g. pasta, tomato, spinach",
-    label_visibility="collapsed"
+    label_visibility="collapsed",
 )
 
 st.markdown("## 🖼️ Or Upload a Fridge Image")
@@ -87,9 +91,9 @@ image_ingr = []
 selected_image_ingr = []
 
 # Track last processed filename
-if 'last_image_name' not in st.session_state:
+if "last_image_name" not in st.session_state:
     st.session_state.last_image_name = None
-if 'cached_ingredients' not in st.session_state:
+if "cached_ingredients" not in st.session_state:
     st.session_state.cached_ingredients = []
 
 if uploaded_image:
@@ -114,12 +118,16 @@ if uploaded_image:
             "Select ingredients to include:",
             options=image_ingr,
             default=image_ingr,
-            key="image_ingr_select"
+            key="image_ingr_select",
         )
 
 combined_ingr = user_input.strip()
 if selected_image_ingr:
-    combined_ingr += f", {', '.join(selected_image_ingr)}" if combined_ingr else ", ".join(selected_image_ingr)
+    combined_ingr += (
+        f", {', '.join(selected_image_ingr)}"
+        if combined_ingr
+        else ", ".join(selected_image_ingr)
+    )
 
 
 # --- Recipe Generation ---
@@ -134,21 +142,21 @@ if st.button("✨ Find Recipe") and combined_ingr.strip():
     # --- Ingredients Section ---
     st.markdown("#### 🧂 Ingredients")
     col1, col2 = st.columns(2)
-    for idx, item in enumerate(recipe['ingredients']):
+    for idx, item in enumerate(recipe["ingredients"]):
         (col1 if idx % 2 == 0 else col2).markdown(f"- {item}")
-    
+
     st.markdown("---")
-    
+
     # --- Instructions Section ---
     st.markdown("#### 📖 Instructions")
     for step in recipe["instructions"]:
         st.markdown(f"- {step}")
-    
+
     st.markdown("---")
 
     # --- Nutrition Section ---
     st.markdown("#### 🔍 Total Nutritional Info")
-    ingredients_for_nutrition = ", ".join(recipe['ingredients'])
+    ingredients_for_nutrition = ", ".join(recipe["ingredients"])
     nutrition_data = fetch_nutrition(ingredients_for_nutrition)
 
     if nutrition_data:

@@ -8,13 +8,13 @@ def fallback_recipe(ingredients: str) -> dict:
             f"Wash and chop the {base.strip()}.",
             "Heat a pan, add oil.",
             "Sauté the ingredients for 5-7 minutes.",
-            "Add salt and spices to taste."
-        ]
+            "Add salt and spices to taste.",
+        ],
     }
 
 
 def fallback_nutrition() -> dict:
- return {
+    return {
         "calories": 200,
         "FAT": 10,
         "PROCNT": 5,
@@ -22,6 +22,6 @@ def fallback_nutrition() -> dict:
         "CHOLE": 30,
     }
 
-def fallback_vision() -> list:
-   return ["onion", "potato", "carrot"]
 
+def fallback_vision() -> list:
+    return ["onion", "potato", "carrot"]

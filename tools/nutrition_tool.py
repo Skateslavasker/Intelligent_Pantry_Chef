@@ -8,4 +8,3 @@ def nutrition_lookup(ingredients: str):
     Fetch nutrition information based on the provided ingredients."""
     result = fetch_nutrition(ingredients)
     return result if result else "TOOL_ERROR: Nutrition API failed."
-
