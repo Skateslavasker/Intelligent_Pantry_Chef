@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
+
+    env:
+      GHCR_USER: ${{ github.repository_owner }}
      
     steps:
 
@@ -25,21 +28,19 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
 
     - name: Build and push pantry-auth image
-      uses: docker/build-push-action@v5
-      with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner | toLower }}/pantry-auth:latest
-            ghcr.io/${{ github.repository_owner | toLower }}/pantry-auth:${{ github.sha }}
+      run: |
+          loweruser=$(echo "${GHCR_USER}" | tr '[:upper:]' '[:lower:]')
+          docker buildx build --push \
+            -f ./backend/Dockerfile \
+            -t ghcr.io/${loweruser}/pantry-auth:latest \
+            -t ghcr.io/${loweruser}/pantry-auth:${{ github.sha }} \
+            ./backend
 
     - name: Build and push pantry-frontend image
-      uses: docker/build-push-action@v5
-      with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner | toLower }}/pantry-frontend:latest
-            ghcr.io/${{ github.repository_owner | toLower }}/pantry-frontend:${{ github.sha }}
+      run: |
+          loweruser=$(echo "${GHCR_USER}" | tr '[:upper:]' '[:lower:]')
+          docker buildx build --push \
+            -f ./Dockerfile \
+            -t ghcr.io/${loweruser}/pantry-frontend:latest \
+            -t ghcr.io/${loweruser}/pantry-frontend:${{ github.sha }} \
+            .
