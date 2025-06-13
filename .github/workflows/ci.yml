@@ -25,7 +25,7 @@ jobs:
 
     - name: Build and push pantry-auth image
       uses: docker/build-push-action@v5
-        with:
+      with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
@@ -33,9 +33,9 @@ jobs:
             ghcr.io/${{ secrets.GHCR_USERNAME }}/pantry-auth:latest
             ghcr.io/${{ secrets.GHCR_USERNAME }}/pantry-auth:${{ github.sha }}
 
-      - name: Build and push pantry-frontend image
-        uses: docker/build-push-action@v5
-        with:
+    - name: Build and push pantry-frontend image
+      uses: docker/build-push-action@v5
+      with:
           context: .
           file: ./Dockerfile
           push: true
