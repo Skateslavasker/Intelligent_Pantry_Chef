@@ -1,7 +1,5 @@
 # 🧠 Intelligent Pantry Chef
 
-![CI/CD](https://github.com/Skateslavasker/Intelligent_Pantry_Chef/actions/workflows/ci.yml/badge.svg)
-
 **Zero-Waste AI Cooking Assistant**  
 Turn your pantry into possibilities! Upload ingredients (text or image), and get AI-curated recipes, nutritional analysis, and cooking instructions – all personalized and interactive.
 
