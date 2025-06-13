@@ -1,6 +1,5 @@
 import os 
 import requests
-import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,6 +7,7 @@ load_dotenv()
 
 NINJAS_RECIPE_API_KEY = os.getenv("NINJAS_RECIPE_API_KEY")
 NINJAS_API_HOST = "recipe-by-api-ninjas.p.rapidapi.com"
+
 
 def fetch_recipe(query: str):
     url = f"https://{NINJAS_API_HOST}/v1/recipe"
@@ -28,4 +28,3 @@ def fetch_recipe(query: str):
     else:
         print(f"Error fetching recipe: {response.status_code} - {response.text}")
         return []
-
