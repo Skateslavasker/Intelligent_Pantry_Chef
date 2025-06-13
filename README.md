@@ -1,5 +1,6 @@
-
 # 🧠 Intelligent Pantry Chef
+
+![CI/CD](https://github.com/Skateslavasker/Intelligent_Pantry_Chef/actions/workflows/ci.yml/badge.svg)
 
 **Zero-Waste AI Cooking Assistant**  
 Turn your pantry into possibilities! Upload ingredients (text or image), and get AI-curated recipes, nutritional analysis, and cooking instructions – all personalized and interactive.
@@ -8,9 +9,9 @@ Turn your pantry into possibilities! Upload ingredients (text or image), and get
 
 ## 📚 Table of Contents
 - [Features](#features)
-- [Demo](#demo)
 - [Installation](#installation)
 - [Usage](#usage)
+- [CI/CD & Docker](#cicd--docker)
 - [Code Structure](#code-structure)
 - [Contributing](#contributing)
 - [License](#license)
@@ -27,12 +28,8 @@ Turn your pantry into possibilities! Upload ingredients (text or image), and get
 - 🔍 **Nutrition Breakdown**: Per-ingredient and total dish analysis.
 - 🛠️ **Fallback-Resilient Agents**: Built-in backup tools for reliability.
 - 🔐 **Google OAuth2 + JWT Login**: Secure, personalized access and future favorites tracking.
-
----
-
-## 🚀 Demo
-
-> Coming soon! Preview our app [here](http://localhost:8501) after local setup.
+- 🐳 **Dockerized App**: Ready-to-deploy backend & frontend containers.
+- ⚙️ **CI/CD Pipeline**: GitHub Actions automates linting, building, and pushing Docker images to GHCR.
 
 ---
 
@@ -43,6 +40,7 @@ Turn your pantry into possibilities! Upload ingredients (text or image), and get
 - pip
 - Node.js (for frontend enhancements, optional)
 - A `.env` file with API keys (see below)
+- Docker (optional but recommended)
 
 ### Clone the repo
 ```bash
@@ -95,6 +93,30 @@ streamlit run app.py
 
 ---
 
+## 🔁 CI/CD & Docker
+
+### 🧪 Continuous Integration (CI)
+Every push or pull request automatically triggers:
+- Python linting via `flake8`
+- Docker build check for both backend and frontend
+
+### 📦 Continuous Delivery (CD)
+On every push to `main`, GitHub Actions:
+- Logs into GitHub Container Registry (GHCR)
+- Builds & pushes:
+  - `ghcr.io/<username>/pantry-auth:latest`
+  - `ghcr.io/<username>/pantry-frontend:latest`
+
+> Images are always ready for deployment via Docker or cloud hosting platforms.
+
+### 🐳 Local Docker Build (Optional)
+```bash
+docker build -t pantry-auth -f backend/Dockerfile .
+docker build -t pantry-frontend -f Dockerfile .
+```
+
+---
+
 ## 🧾 Code Structure
 
 ```
@@ -112,6 +134,8 @@ streamlit run app.py
 ├── nutrition_api.py        # Nutrition query interface
 ├── recipe_api.py           # REST hooks for recipe retrieval
 ├── .env                    # Environment variables (not committed)
+├── Dockerfile              # Frontend Docker build
+├── backend/Dockerfile      # Backend Docker build
 └── requirements.txt        # Project dependencies
 ```
 
@@ -147,6 +171,8 @@ You are free to use, modify, and distribute this software with attribution.
 - [API Ninjas](https://api-ninjas.com/)
 - [Streamlit](https://streamlit.io/)
 - [FastAPI](https://fastapi.tiangolo.com/)
+- [GitHub Actions](https://github.com/features/actions)
+- [GHCR (GitHub Container Registry)](https://ghcr.io)
 
 ---
 
@@ -156,4 +182,3 @@ Feel free to reach out:
 
 - GitHub Issues: [Open an issue](https://github.com/Skateslavasker/Intelligent_Pantry_Chef/issues)
 - Email: revanthnaik12@gmail.com
-- LinkedIn: [Revanth Mudavath](https://www.linkedin.com/in/revanthmudavath/)
